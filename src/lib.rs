@@ -2,50 +2,32 @@ pub mod error;
 pub mod types;
 pub mod traits;
 pub mod openai;
+pub mod tools;
+pub mod agent;
+pub mod cli;
+pub mod benchmark;
 
-
-use error::AgentError;
-use openai::OpenAIModel;
-use traits::Model;
-use types::{Message, ModelResponse, ToolSpec};
-
-pub async fn run_cli(args: Vec<String>) -> Result<String, AgentError>{
-    if args.is_empty() {
-        return Err(AgentError::InvalidInputError(String::from("Please provide a prompt!")))
-    }
-
-    let prompt = args.join(" ");
-    let api_key = std::env::var("OPENAI_API_KEY")
-        .map_err(|_| AgentError::InvalidInputError(
-            String::from("api key not set")
-        ))?;
-    let model = OpenAIModel::new(api_key, String::from("gpt-4.1-nano"));
-
-    let messages = vec![
-        Message::system("You are count von count, a helpful assistant."),
-        Message::user(&prompt),
-    ];
-
-    match model.generate(messages, None).await? {
-        ModelResponse::Text(text) => Ok(text),
-        ModelResponse::ToolCalls(_) => {
-            Ok(String::from("Tool calls not supported yet, but model wanted to use!"))
-        }
-    }
-}
-
-pub fn run_benchmarks() -> String {
-    String::from("Hello, world! Running benchmarks")    
-}
+pub use cli::{run_cli, run_cli_no_tools};
+pub use benchmark::run_benchmarks;
+pub use error::AgentError;
 
 #[cfg(test)]
-mod tests {
+mod integration_tests {
     use super::*;
-    
+
     #[tokio::test]
-    async fn test_cli_with_no_prompt() {
-        let r = run_cli(vec![]).await;
-        assert!(r.is_err());
-        assert_eq!(r.err().unwrap().to_string(), "Invalid Input: Please provide a prompt!");
+    async fn test_cli_with_empty_prompt() {
+        unsafe { std::env::set_var("OPENAI_API_KEY", "test-key"); }
+        let result = run_cli("".to_string(), false).await;
+        assert!(result.is_err());
+        assert!(result.unwrap_err().to_string().contains("non-empty prompt"));
+    }
+
+    #[tokio::test]
+    async fn test_cli_no_tools_with_empty_prompt() {
+        unsafe { std::env::set_var("OPENAI_API_KEY", "test-key"); }
+        let result = run_cli_no_tools("".to_string()).await;
+        assert!(result.is_err());
+        assert!(result.unwrap_err().to_string().contains("non-empty prompt"));
     }
 }

@@ -1,0 +1,25 @@
+schema: [prompt, expected_output]
+tests:
+  # Basic arithmetic
+  - ["What is 15 * 7 + 23?", "128"]
+  # - ["Calculate 144 / 12 + 5", "17"]
+  # - ["What is 123 + 456 * 2?", "1035"]
+  # - ["What is (25 + 75) / 4?", "25"]
+
+  # # Date/time queries
+  # - ["What time is it?", "current_time"]
+  # - ["Get current timestamp in human format", "human_readable_time"]
+  # - ["What's the current date in ISO format?", "iso_date"]
+
+  # # Combined queries
+  # - ["What time is it and what is 100 / 4?", "current_time_and_25"]
+  # - ["Calculate 50 * 2 and tell me the current timestamp", "100_and_timestamp"]
+
+  # # Complex arithmetic
+  # - ["What is 2 * 2 * 2 * 2 * 2?", "32"]
+  # - ["Calculate 1000 / 8 + 75", "200"]
+  # - ["What is 15% of 200?", "30"]
+
+  # # Edge cases
+  # - ["What is 0 / 5?", "0"]
+  # - ["What is 1000000 + 1?", "1000001"]
