@@ -24,6 +24,8 @@ pub struct TestResult {
     pub timestamp: String,
     pub with_tools_duration_ms: u64,
     pub without_tools_duration_ms: u64,
+    pub with_tools_length: usize,
+    pub without_tools_length: usize,
 }
 
 #[derive(Debug, Serialize)]
@@ -68,6 +70,8 @@ pub async fn run_benchmarks() -> Result<String, AgentError> {
             timestamp: Utc::now().to_rfc3339(),
             with_tools_duration_ms: with_tools_duration.as_millis() as u64,
             without_tools_duration_ms: without_tools_duration.as_millis() as u64,
+            with_tools_length: with_tools_response.len(),
+            without_tools_length: without_tools_response.len(),
         };
         
         results.push(result);
@@ -76,8 +80,8 @@ pub async fn run_benchmarks() -> Result<String, AgentError> {
         let without_tools_display = truncate_string(&without_tools_response, 100);
         
         output_lines.push(format!("Benchmark: {}", test_case.prompt));
-        output_lines.push(format!("  With Tools:    {} ({}ms)", with_tools_display, with_tools_duration.as_millis()));
-        output_lines.push(format!("  Without Tools: {} ({}ms)", without_tools_display, without_tools_duration.as_millis()));
+        output_lines.push(format!("  With Tools:    {} ({}ms, {} chars)", with_tools_display, with_tools_duration.as_millis(), with_tools_response.len()));
+        output_lines.push(format!("  Without Tools: {} ({}ms, {} chars)", without_tools_display, without_tools_duration.as_millis(), without_tools_response.len()));
         output_lines.push("".to_string());
     }
     
@@ -139,8 +143,9 @@ async fn save_benchmark_results(results: Vec<TestResult>) -> Result<BenchmarkSum
 }
 
 fn truncate_string(s: &str, max_len: usize) -> String {
-    if s.len() > max_len {
-        format!("{}...", &s[..max_len])
+    if s.chars().count() > max_len {
+        let truncated: String = s.chars().take(max_len).collect();
+        format!("{}...", truncated)
     } else {
         s.to_string()
     }
