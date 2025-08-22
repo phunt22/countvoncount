@@ -1,25 +1,194 @@
 schema: [prompt, expected_output]
 tests:
-  # Basic arithmetic
-  - ["What is 15 * 7 + 23?", "128"]
-  # - ["Calculate 144 / 12 + 5", "17"]
-  # - ["What is 123 + 456 * 2?", "1035"]
-  # - ["What is (25 + 75) / 4?", "25"]
+  # Calculator math (1-25)
+  - ["What is 1847 * 923 + 4561 / 7 - 89?", "1,705,343"]
+  - ["Calculate (987 + 654) * (321 - 198) + 456", "202,299"]
+  - ["What is 12345 / 67 + 891 * 23 - 456?", "20,211.254"]
+  - ["Calculate 2^10 + 3^7 + 5^4 - 100", "3,736"]
+  - ["What is 999999 / 7777 + 8888 * 3.14159?", "28,051"]
+  - ["Calculate 789.456 * 12.34 + 567.89 - 123.45", "10186"]
+  - ["What is 1728 / 12 + 345 * 6 - 789?", "1425"]
+  - ["Calculate 987654 / 321 + 456 * 7.89 - 123", "6551"]
+  - ["What is (159 + 357) * (753 - 951) / 2 + 888?", "-50,196"]
+  - ["Calculate 777.777 * 3.33 + 888.888 / 4.44 - 555", "2,235"]
+  - ["What is 13579 / 7 + 2468 * 5 - 1111?", "13,168"]
+  - ["Calculate ((999 + 111) * 2) / 5 + 777 - 333", "555"]
+  - ["What is 45678 / 9 + 87654 / 6 - 12345?", "7339"]
+  - ["Calculate 3.14159 * 2.71828 + 1.41421 * 1.73205 + 9.8696", "20.85"]
+  - ["What is 876543 / 987 + 65432 * 0.123 - 4567?", "4369"]
+  - ["Calculate (246 + 135) * (789 - 456) / 3 + 999", "43,290"]
+  - ["What is 55555 / 11 + 77777 / 7 - 99999 / 9?", "5050"]
+  - ["Calculate 1234567 / 89 + 456 * 78.9 - 321", "49528"]
+  - ["What is (987 - 654) * (321 + 456) / 7 + 888?", "37,851"]
+  - ["Calculate 15.789 * 23.456 + 67.891 - 12.345", "425"]
+  - ["What is 8765 / 43 + 2109 * 6.7 - 5432?", "8902"]
+  - ["Calculate ((456 + 789) / 5) * 8 - 321", "1671"]
+  - ["What is 97531 / 13 + 86420 / 7 - 24680?", "-4832"]
+  - ["Calculate 789 * 123.45 + 456.78 / 9.87 - 654", "96,794"]
+  - ["What is (1111 + 2222) * (3333 - 4444) / 11 + 5555?", "-331,078"]
 
-  # # Date/time queries
-  # - ["What time is it?", "current_time"]
-  # - ["Get current timestamp in human format", "human_readable_time"]
-  # - ["What's the current date in ISO format?", "iso_date"]
+  # Date calculations (26-50)
+  - ["How many days until Christmas?", "days_to_christmas (126)"]
+  - ["How many days until Thanksgiving?", "days_to_thanksgiving (98)"]
+  - ["How many days until New Year?", "days_to_new_year (133)"]
+  - ["How many days until Valentine's Day?", "days_to_valentines (177)"]
+  - ["How many days until Independence Day?", "days_to_july_4 (317)"]
+  - ["How many days until Halloween?", "days_to_halloween (71)"]
+  - [
+      ## variable
+      "How many days between st patricks day and thanksgiving?",
+      "255",
+    ]
+  - [
+      ## fixed
+      "How many days between christmas and new years eve?",
+      "6",
+    ]
+  - [
+      ## fixed, larger
+      "How many days between april fools and christmas?",
+      "268",
+    ]
+  - ["How many days until the end of this month?", "days_to_month_end (10)"]
+  - ["How many days until the end of this year?", "days_to_year_end (132)"]
+  - ["How many days until my birthday on March 15th?", "days_to_march_15 (206)"]
+  - ["How many days until April Fool's Day?", "days_to_april_1 (223)"]
+  # more ambigious. Combing model's baked in world knowledge w calculator (NO WEB SEARCH)
+  - ["How many days until Labor Day?", "days_to_labor_day (11)"]
+  - ["How many days until Memorial Day?", "days_to_memorial_day (277)"]
+  - ["How many days until Earth Day?", "days_to_earth_day (244)"]
+  - ["How many days until summer solstice?", "days_to_summer_solstice (303)"]
+  - ["How many days until winter solstice?", "days_to_winter_solstice (122)"]
+  - ["How many days until Groundhog Day?", "days_to_groundhog_day (165)"]
+  - ["How many days until St. Patrick's Day?", "days_to_st_patricks (208)"]
+  - ["How many days until Mother's Day?", "days_to_mothers_day (262)"]
+  - ["How many days until Father's Day?", "days_to_fathers_day (304)"]
+  - ["How many days until Columbus Day?", "days_to_columbus_day (53)"]
+  - [
+      "How many days until Indigenous Peoples' Day?",
+      "days_to_indigenous_peoples_day (53)",
+    ]
+  - ["How many days until Veterans Day?", "days_to_veterans_day (82)"]
+  - ["How many days until Presidents Day?", "days_to_presidents_day (179)"]
+  - ["How many days until mlk Day?", "days_to_mlk_day (151)"]
 
-  # # Combined queries
-  # - ["What time is it and what is 100 / 4?", "current_time_and_25"]
-  # - ["Calculate 50 * 2 and tell me the current timestamp", "100_and_timestamp"]
+  # Complex time-based calculations (51-75)
+  - ["If it's currently 3:45 PM, how many minutes until 6:30 PM?", "165"]
+  - [
+      ## slightly ambigious (doomsday clock)
+      "How many seconds until midnight?",
+      "timestamp_and_seconds (varies)",
+    ]
+  - [
+      "How many hours have passed since midnight today?",
+      "hours_since_midnight (varies)",
+    ]
+  - [
+      "If I started working at 9 AM and it's now 2:30 PM, how many minutes have I worked?",
+      "330",
+    ]
+  - ["How many days until the next leap year?", "leap_days (922)"]
+  - [
+      "How many seconds have passed since the start of this hour?",
+      "seconds_this_hour (varies)",
+    ]
+  - ["If it's Monday, how many days until next Friday?", "4"]
+  - [
+      "What's the current time and how many minutes are left in this hour?",
+      "time_and_minutes_left (varies)",
+    ]
+  - [
+      "How many weeks are there between now and December 31st?",
+      "weeks_to_dec_31 (19)",
+    ]
+  - [
+      "If today is the 15th, how many days until the end of the month?",
+      "days_to_month_end_from_15th (16)",
+    ]
+  - ["How many days until the next full moon?", "days_to_full_moon (14)"]
+  - ["How many business days are left in this month?", "business_days_left (7)"]
+  - [
+      "If I have a meeting every Tuesday, how many meetings until year end?",
+      "tuesdays_left (19)",
+    ]
+  - [
+      "What's today's date and how many Sundays are left in this year?",
+      "sundays_left (19)",
+    ]
+  - [
+      "How many hours are there between now and next Monday at 9 AM?",
+      "hours_to_monday_9am (92)",
+    ]
+  - [
+      "If it's currently quarter past the hour, what time will it be in 2.75 hours?",
+      "time_plus_2h45m (varies)",
+    ]
+  - [
+      "How many 15-minute intervals have passed since 6 AM today?",
+      "intervals_since_6am (27)",
+    ]
+  - [
+      "What's the current time and when will it be exactly 1000 minutes from now?",
+      "time_plus_1000_min (varies)",
+    ]
+  - [
+      "How many days ago was the last Friday the 13th?",
+      "days_since_friday_13th (69)",
+    ]
+  - [
+      "If today is Wednesday, how many hours until Sunday at noon?",
+      "hours_to_sunday_noon (84)",
+    ]
+  - [
+      "What's the current date and how many months until my birthday on June 8th?",
+      "months_to_june_8 (9)",
+    ]
+  - ["How many 30-minute periods fit between 8 AM and 5 PM?", "18"]
+  - [
+      "If I sleep 8 hours per night, how many hours of sleep until New Year?",
+      "sleep_hours_to_new_year (1064)",
+    ]
+  - [
+      "What's the current time and how many seconds until the next even hour?",
+      "seconds_to_even_hour (varies)",
+    ]
+  - ["How many weekends are left in this year?", "weekends_left (19)"]
 
-  # # Complex arithmetic
-  # - ["What is 2 * 2 * 2 * 2 * 2?", "32"]
-  # - ["Calculate 1000 / 8 + 75", "200"]
-  # - ["What is 15% of 200?", "30"]
-
-  # # Edge cases
-  # - ["What is 0 / 5?", "0"]
-  # - ["What is 1000000 + 1?", "1000001"]
+  # Challenging word problems - Google searches (76-100)
+  - ["What mile pace is a 2:52 marathon?", "6:34"]
+  - ["How much tip on a $127.83 bill for 18% service?", "23.01"]
+  - ["What's 15% off a $89.99 item?", "76.49"]
+  - ["How many calories in 3.7 servings of 247 calories per serving?", "913.9"]
+  - [
+      "What's the monthly payment on a $285,000 mortgage at 6.5% for 30 years?",
+      "1801.39",
+    ]
+  - ["How much does 147 gallons of gas cost at $3.89 per gallon?", "571.83"]
+  - ["What's 23% of my $2,847 monthly salary?", "654.81"]
+  - ["How many miles is 10,000 steps at 2.5 feet per step?", "4.73"]
+  - ["What's the compound interest on $5,000 at 4.2% for 7 years?", "1668.74"]
+  - ["How much protein in 8.3 oz of chicken at 31g per 100g?", "72.9"]
+  - [
+      "What's my hourly rate if I earn $67,500 annually working 40 hours/week?",
+      "32.45",
+    ]
+  - ["How many square feet is a 23.7 x 41.2 foot room?", "976.44"]
+  - ["What's the sales tax on $234.56 at 8.75% rate?", "20.52"]
+  - ["How many ounces in 2.3 liters?", "77.8"]
+  - ["What's 67% of 1,847 total survey responses?", "1237.49"]
+  - ["How much does 147 pounds weigh in kilograms?", "66.82"]
+  - ["What's the area of a circle with 15.7 inch diameter?", "193.5"]
+  - ["How many days to lose 23 pounds at 1.7 pounds per week?", "95"]
+  - ["What's my take-home after 22% taxes on $4,567 gross?", "3562.26"]
+  - ["How many tablespoons in 1.75 cups?", "28"]
+  - [
+      "What's the cost per square foot of a $347,000 house that's 2,150 sq ft?",
+      "161.4",
+    ]
+  - [
+      "How many minutes to bake 12 potatoes if 4 potatoes take 47 minutes?",
+      "141",
+    ]
+  - ["What's 12.5% commission on $23,847 in sales?", "2980.88"]
+  - ["How many feet is 347 meters?", "1138.45"]
+  - ["What's the price per pound if 2.3 pounds costs $8.97?", "3.9"]

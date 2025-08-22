@@ -4,9 +4,18 @@ This projects adds custom tools in Rust (calculator and datetime) to OpenAI's AP
 
 ### Results
 
-gpt-4.1-nano shows substantial improvements on my benchmark set when using tooling (shocking, I know).
+gpt-4o-mini showed an increase in accuracy (72% vs 51%) and a reduction in output length (254 chars vs 472, almost half), but an increase in time (29% slower).
 
-[RESULTS_GO_HERE]
+Without tools, the model tends to provide detailed step-by-step reasoning with LaTeX formatting and explicit final answer formatting. With tools available, the model becomes more direct but sometimes calls tools unnecessarily (like datetime for math problems) or struggles with complex expressions the calculator can't parse.
+
+An interesting example of this was the question "How many minutes to bake 12 potatoes if 4 take 47 minutes?" With tools the model answered as pure math (141), but without tools, the model said 47 minutes and argued that it would be the same regardless of the amount of potatoes, interpreting it more as a riddle.
+
+Additionally, tools failed 3 times to error and some questions were ambigious, leading to "technically correct" solutions, so take these results with a grain of salt.
+
+![Average Response Time](graphs/time.png)
+![Average Response Length](graphs/length.png)
+![Accuracy Comparison](graphs/accuracy.png)
+![Response Length by Correctness](graphs/length_by_correctness.png)
 
 ### Installation
 
@@ -19,8 +28,8 @@ cd countvoncount
 
 ### Example .env file
 #### (note: if MODEL_NAME is ommitted, then gpt-4.1-nano will be used)
-OPENAI_API_KEY=sk-<YOUR-KEY-HERE>
-MODEL_NAME=gpt-4.1-nano
+    OPENAI_API_KEY=sk-<YOUR-KEY-HERE>
+    MODEL_NAME=gpt-4.1-nano
 
 # Build and install
 cargo build --release
@@ -45,13 +54,31 @@ cvc --verbose "Complex calculation: (25 + 75) * 2 / 4"
 
 ## Benchmarking
 
-`test_cases.yaml` contains 100 test cases. To run the benchmark, simply run:
+`test_cases.yaml` contains 100 test cases.
+Some of these expected answers in the yaml file will not be accurate, since they are time dependent. These are shown in the form `expected_answer (<actual answer at time of writing>)`
+
+To run the benchmark, simply run:
 
 ```bash
 cvc --combine
 ```
 
-Results will be saved to a `.jsonl` file in the `results` directory, with the prompt, expected output, and results with and without tools. To evaluate, I did it by hand, but using LLM-as-a-judge would probably be a good next step.
+Results will be saved to a `.jsonl` file in the `results` directory, with the prompt, expected output, and results with and without tools.
+
+For scoring the LLM's result in the previous step, I did human-as-a-judge, which is like LLM-as-a-judge, except it is done by a human (me). My rule of thumb was +/- 1 was a success.
+
+### Analysis & Visualization
+
+```bash
+# Score results (manually)
+cd analysis
+python score.py ../results/<BENCHMARK_NAME>.jsonl
+
+# Generate charts
+./run.sh ../results/<BENCHMARK_NAME>.jsonl
+```
+
+This creates some charts that will compare the results, looking at things like length, time, and accuracy.
 
 ### Custom Test Cases
 

@@ -1,3 +1,7 @@
 /target
 .env
 /results/*
+/analysis/output/*
+/analysis/venv
+.DS_Store
+
