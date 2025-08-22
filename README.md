@@ -4,7 +4,7 @@ This projects adds custom tools in Rust (calculator and datetime) to OpenAI's AP
 
 ### Results
 
-gpt-4o-mini showed an increase in accuracy (72% vs 51%) and a reduction in output length (254 chars vs 472, almost half), but an increase in time (29% slower).
+gpt-4.1-nano showed an increase in accuracy (72% vs 51%) and a reduction in output length (254 chars vs 472, almost half), but an increase in time (29% slower).
 
 Without tools, the model tends to provide detailed step-by-step reasoning with LaTeX formatting and explicit final answer formatting. With tools available, the model becomes more direct but sometimes calls tools unnecessarily (like datetime for math problems) or struggles with complex expressions the calculator can't parse.
 
@@ -12,9 +12,9 @@ An interesting example of this was the question "How many minutes to bake 12 pot
 
 Additionally, tools failed 3 times to error and some questions were ambigious, leading to "technically correct" solutions, so take these results with a grain of salt.
 
-![Average Response Time](graphs/time.png)
+![Accuracy Comparison, 20%](graphs/accuracy.png)
 ![Average Response Length](graphs/length.png)
-![Accuracy Comparison](graphs/accuracy.png)
+![Average Response Time](graphs/time.png)
 ![Response Length by Correctness](graphs/length_by_correctness.png)
 
 ### Installation
